@@ -9,11 +9,24 @@ let transporter = null;
 const getTransporter = async () => {
     if (transporter) return transporter;
 
-    // Auto-create an Ethereal test account for development
-    console.log('🔐 Creating Ethereal test account (requires internet)...');
-    const testAccount = await nodemailer.createTestAccount();
-    console.log('🔐 Account created:', testAccount.user);
+    // Check if user provided manual SMTP credentials (e.g., Ethereal, SendGrid, Gmail)
+    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+        console.log('📧 Using manual SMTP configuration...');
+        transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST || 'smtp.ethereal.email',
+            port: process.env.SMTP_PORT || 587,
+            secure: process.env.SMTP_PORT == 465, // true for 465, false for other ports
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS
+            }
+        });
+        return transporter;
+    }
 
+    // Fallback: Auto-create an Ethereal test account (legacy/dev behavior)
+    console.log('🔐 Creating temporary Ethereal account (this may be slow)...');
+    const testAccount = await nodemailer.createTestAccount();
     transporter = nodemailer.createTransport({
         host: 'smtp.ethereal.email',
         port: 587,
@@ -23,14 +36,13 @@ const getTransporter = async () => {
             pass: testAccount.pass
         }
     });
-
-    console.log('📧 Ethereal email account created:', testAccount.user);
     return transporter;
 };
 
 const sendVerificationEmail = async (toEmail, name, token) => {
     const transport = await getTransporter();
-    const verifyUrl = `http://localhost:5173/verify-email?token=${token}`;
+    const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
+    const verifyUrl = `${frontendUrl}/verify-email?token=${token}`;
 
     const info = await transport.sendMail({
         from: '"AuraBlogs" <no-reply@aurablogs.com>',
@@ -60,7 +72,8 @@ const sendVerificationEmail = async (toEmail, name, token) => {
 
 const sendPasswordResetEmail = async (toEmail, name, token) => {
     const transport = await getTransporter();
-    const resetUrl = `http://localhost:5173/reset-password?token=${token}`;
+    const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
+    const resetUrl = `${frontendUrl}/reset-password?token=${token}`;
 
     const info = await transport.sendMail({
         from: '"AuraBlogs" <no-reply@aurablogs.com>',

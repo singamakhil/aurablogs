@@ -43,15 +43,16 @@ const register = async (req, res) => {
             [name, email, password_hash, verify_token]
         );
 
-        // Send verification email (non-blocking — don't fail registration if email fails)
-        let previewUrl = null;
-        try {
-            console.log('📬 Starting email send flow...');
-            previewUrl = await sendVerificationEmail(email, name, verify_token);
-            console.log('🏁 Email send flow finished.');
-        } catch (emailErr) {
-            console.error('Email send failed:', emailErr.message);
-        }
+        // Send verification email (non-blocking background process)
+        console.log('📬 Starting email send flow in background...');
+        sendVerificationEmail(email, name, verify_token)
+            .then(previewUrl => {
+                if (previewUrl) console.log('🏁 Email background process finished. Preview:', previewUrl);
+            })
+            .catch(emailErr => {
+                console.error('Email background send failed:', emailErr.message);
+            });
+
 
         res.status(201).json({
             message: 'Account created! Please check your email to verify your account.',
