@@ -10,9 +10,7 @@ import {
     Unlock,
     ArrowRight,
     Sparkles,
-    ChevronRight,
-    X,
-    Filter
+    X
 } from 'lucide-react';
 import './Home.css';
 
