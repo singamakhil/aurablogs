@@ -30,10 +30,22 @@ app.use('/api/blogs', blogRoutes);
 const setupSwagger = require('./utils/swagger');
 setupSwagger(app);
 
-// Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'AuraBlogs API is running' });
 });
+
+// Test Email Endpoint (Temporary debug helper)
+app.get('/api/auth/test-email', async (req, res) => {
+    const { sendVerificationEmail } = require('./utils/email');
+    try {
+        console.log('🧪 Triggering test email...');
+        const preview = await sendVerificationEmail(process.env.SMTP_USER || 'test@example.com', 'Test User', 'test-token');
+        res.json({ message: 'Test email triggered', preview });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 
 const PORT = process.env.PORT || 3000;
 

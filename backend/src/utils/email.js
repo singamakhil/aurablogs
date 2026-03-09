@@ -14,13 +14,20 @@ const getTransporter = async () => {
         console.log('📧 Using manual SMTP configuration...');
         transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST || 'smtp.ethereal.email',
-            port: process.env.SMTP_PORT || 587,
-            secure: process.env.SMTP_PORT == 465, // true for 465, false for other ports
+            port: parseInt(process.env.SMTP_PORT) || 587,
+            secure: process.env.SMTP_PORT == 465,
             auth: {
                 user: process.env.SMTP_USER,
                 pass: process.env.SMTP_PASS
             }
         });
+
+        try {
+            await transporter.verify();
+            console.log('✅ SMTP connection verified successfully');
+        } catch (err) {
+            console.error('❌ SMTP connection verification failed:', err.message);
+        }
         return transporter;
     }
 
@@ -63,11 +70,15 @@ const sendVerificationEmail = async (toEmail, name, token) => {
             <p style="color: #64748b; font-size: 12px; text-align: center;">Or copy this link: <a href="${verifyUrl}" style="color: #8b5cf6;">${verifyUrl}</a></p>
         </div>
         `
+    }).catch(err => {
+        console.error('❌ sendMail Error:', err.message);
+        throw err;
     });
 
     const previewUrl = nodemailer.getTestMessageUrl(info);
-    console.log('📧 Verification email sent! Preview at:', previewUrl);
-    return previewUrl; // Return for dev convenience
+    console.log('📧 Verification email sent successfully to:', toEmail);
+    if (previewUrl) console.log('🔗 Preview URL:', previewUrl);
+    return previewUrl;
 };
 
 const sendPasswordResetEmail = async (toEmail, name, token) => {
