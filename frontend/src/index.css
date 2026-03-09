@@ -1,0 +1,32 @@
+:root {
+  /* Old Theme Palette */
+  --bg-dark: #1a120b;
+  --bg-card: #2d2013;
+  --gold-primary: #d4af37;
+  --gold-secondary: #c5a059;
+  --ash-text: #90a4ae;
+  --ash-neutral: #546e7a;
+  --text-main: #e0e0e0;
+  --accent-brown: #3e2723;
+  --border-gold: rgba(212, 175, 55, 0.25);
+  --glow-gold: rgba(212, 175, 55, 0.1);
+}
+
+/* Basic Reset */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}

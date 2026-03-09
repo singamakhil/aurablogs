@@ -1,0 +1,23 @@
+# Dependency directories
+node_modules/
+**/node_modules/
+
+# Environment variables
+.env
+**/.env
+**/.env.local
+
+# Database
+*.db
+*.db-journal
+**/aurablogs.db
+
+# Build outputs
+dist/
+**/dist/
+
+# OS/IDE metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
