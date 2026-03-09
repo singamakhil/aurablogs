@@ -99,7 +99,7 @@ async function seedBlogs() {
         {
             title: "Mastering React Server Components",
             excerpt: "Discover how to leverage RSCs for optimal performance and seamless data fetching in your next big application.",
-            content: "React Server Components (RSC) represent a paradigm shift in how we build React applications...",
+            content: "React Server Components (RSC) represent a paradigm shift in how we build React applications. By rendering components exclusively on the server, we can significantly reduce the amount of JavaScript sent to the client — leading to faster Time to Interactive (TTI) and better SEO. This architecture allows developers to think about data fetching in a much more collocated way, fetching data directly inside the components that need it without the waterfall effects typical of client-side-only apps.",
             type: 'free',
             category: 'Development',
             reading_time: 8,
@@ -108,13 +108,49 @@ async function seedBlogs() {
         {
             title: "Advanced Tailwind Architecture",
             excerpt: "Stop building messy styling structures. Learn the enterprise-grade patterns for managing complex Tailwind configurations.",
-            content: "As your Tailwind CSS projects grow, the utility classes can become unmanageable...",
+            content: "As your Tailwind CSS projects grow, the utility classes can become unmanageable. To solve this, enterprise teams use the CVA (Class Variance Authority) pattern combined with tailwind-merge to safely construct component APIs without style conflicts. This approach ensures that your design system remains consistent while allowing for the flexibility that utility-first CSS provides. In this deep dive, we explore how to build a robust design system that your entire team can rely on.",
             type: 'premium',
             category: 'Design',
             reading_time: 12,
             date: "Nov 02, 2024"
+        },
+        {
+            title: "The Ultimate Guide to Turbopack",
+            excerpt: "Speed up your build times by 10x. A comprehensive deep dive into the Rust-based bundler replacing Webpack.",
+            content: "Turbopack is the successor to Webpack, rewritten from the ground up in Rust. It utilizes Incremental Computation to cache every function result, ensuring that your development server scales effortlessly regardless of how large your application gets. By leveraging a more efficient engine, Turbopack can handle massive codebases that would bring traditional bundlers to their knees. We look at the architectural decisions that make this performance possible.",
+            type: 'free',
+            category: 'Development',
+            reading_time: 10,
+            date: "Dec 15, 2024"
+        },
+        {
+            title: "Security in the Age of Generative AI",
+            excerpt: "How to protect your codebase from AI-generated vulnerabilities and stay ahead of automated exploit tools.",
+            content: "Generative AI is a double-edged sword for developers. While it boosts productivity, it can also introduce subtle security flaws if not used carefully. From prompt injection to insecure code suggestions, the threat landscape is evolving rapidly. This article covers the essential security protocols every modern developer needs to implement when integrating AI tools into their daily workflow to ensure their production environments remain compromise-free.",
+            type: 'premium',
+            category: 'Security',
+            reading_time: 15,
+            date: "Jan 12, 2025"
+        },
+        {
+            title: "Designing Intuitive User Journeys",
+            excerpt: "Beyond pixels: how to craft experiences that users love using psychology and data-driven design patterns.",
+            content: "Great design isn't just about how things look; it's about how they work in the context of the user's mind. By understanding cognitive load and behavioral psychology, designers can create paths through applications that feel natural and effortless. We analyze successful UI patterns from top-tier apps and explain why they work, giving you actionable insights for your next product launch.",
+            type: 'free',
+            category: 'UX/UI',
+            reading_time: 7,
+            date: "Feb 05, 2025"
+        },
+        {
+            title: "Building Micro-frontends with Vite",
+            excerpt: "Scaling frontend applications across multiple teams? Learn how Module Federation in Vite makes it seamless.",
+            content: "Module Federation allows you to dynamically load code from another application at runtime. With the @originjs/vite-plugin-federation plugin, Vite users can now share dependencies and components seamlessly without having to use Webpack. This architecture is perfect for large organizations where independent squads need to ship features into a single shell application without being tethered to a monolithic build cycle.",
+            type: 'premium',
+            category: 'Development',
+            reading_time: 14,
+            date: "Feb 22, 2025"
         }
-        // ... truncated for brevity, but I should keep the original seed logic complete if possible
+
     ];
 
     console.log('🌱 Seeding database...');
