@@ -12,8 +12,9 @@ const blogRoutes = require('./routes/blog.routes');
 const app = express();
 
 // CORS — allow the frontend and pass cookies through  
+const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, '') : 'http://localhost:5173';
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: frontendUrl,
     credentials: true               // Allow cookies to be sent cross-origin
 }));
 
