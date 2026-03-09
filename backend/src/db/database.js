@@ -27,10 +27,8 @@ if (USE_TURSO) {
     });
 }
 
-// Ensure database is initialized for Turso if using it
-if (USE_TURSO) {
-    initializeDatabase();
-}
+// initialization is now handled by the caller (server.js)
+
 
 async function initializeDatabase() {
     const schemas = [
@@ -206,5 +204,6 @@ const run = async (sql, params = []) => {
     }
 };
 
-module.exports = { query, queryOne, run };
+module.exports = { query, queryOne, run, initializeDatabase };
+
 

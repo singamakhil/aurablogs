@@ -4,7 +4,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 // Initialize database (creates tables + seeds data)
-require('./db/database');
+const { initializeDatabase } = require('./db/database');
+
 
 const authRoutes = require('./routes/auth.routes');
 const blogRoutes = require('./routes/blog.routes');
@@ -35,6 +36,19 @@ app.get('/api/health', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+
+async function startServer() {
+    try {
+        console.log('🔄 Initializing database...');
+        await initializeDatabase();
+
+        app.listen(PORT, () => {
+            console.log(`🚀 Server running on http://localhost:${PORT}`);
+        });
+    } catch (err) {
+        console.error('❌ Failed to start server:', err);
+        process.exit(1);
+    }
+}
+
+startServer();
