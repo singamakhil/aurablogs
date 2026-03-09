@@ -12,7 +12,7 @@ const getTransporter = async () => {
     // Check if user provided manual SMTP credentials (e.g., Ethereal, SendGrid, Gmail)
     if (process.env.SMTP_USER && process.env.SMTP_PASS) {
         console.log('📧 Using manual SMTP configuration...');
-        const port = parseInt(process.env.SMTP_PORT) || 465;
+        const port = parseInt(process.env.SMTP_PORT) || 587;
         const secure = process.env.SMTP_SECURE === 'true' || port === 465;
 
         transporter = nodemailer.createTransport({
@@ -22,7 +22,11 @@ const getTransporter = async () => {
             auth: {
                 user: process.env.SMTP_USER,
                 pass: process.env.SMTP_PASS
-            }
+            },
+            connectionTimeout: 15000, // 15 seconds
+            greetingTimeout: 15000,
+            socketTimeout: 30000,
+            pool: true // Use pooling for better performance
         });
 
         try {

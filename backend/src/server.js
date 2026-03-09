@@ -53,12 +53,14 @@ async function startServer() {
     try {
         console.log('🔄 Initializing database...');
         await initializeDatabase();
+        console.log('✅ Database initialization complete');
 
         app.listen(PORT, () => {
             console.log(`🚀 Server running on http://localhost:${PORT}`);
         });
     } catch (err) {
-        console.error('❌ Failed to start server:', err);
+        console.error('❌ CRITICAL: Failed to start server!');
+        console.error('Error Details:', err);
         process.exit(1);
     }
 }

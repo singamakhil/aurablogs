@@ -14,7 +14,6 @@ if (USE_TURSO) {
         url: process.env.TURSO_DB_URL,
         authToken: process.env.TURSO_DB_AUTH_TOKEN,
     });
-    // For LibSQL, we don't need a callback like sqlite3, but we should verify connection
 } else {
     console.log('💾 Connecting to local SQLite database...');
     db = new sqlite3.Database(DB_PATH, (err) => {
@@ -22,13 +21,9 @@ if (USE_TURSO) {
             console.error('❌ Error connecting to database:', err.message);
         } else {
             console.log('✅ Connected to local SQLite database');
-            initializeDatabase();
         }
     });
 }
-
-// initialization is now handled by the caller (server.js)
-
 
 async function initializeDatabase() {
     const schemas = [
@@ -61,7 +56,7 @@ async function initializeDatabase() {
             await run(sql);
         }
 
-        // Migrations (handling errors if columns exist)
+        // Migrations
         const migrations = [
             "ALTER TABLE users ADD COLUMN is_verified INTEGER NOT NULL DEFAULT 0",
             "ALTER TABLE users ADD COLUMN verify_token TEXT",
@@ -75,16 +70,14 @@ async function initializeDatabase() {
             try {
                 await run(sql);
             } catch (err) {
-                // Ignore duplicate column errors
                 if (!err.message.includes('duplicate column')) {
                     console.error('Migration error:', err.message);
                 }
             }
         }
 
-        // Seed if empty
         const countRes = await queryOne('SELECT COUNT(*) as count FROM blogs');
-        if (countRes.count === 0) {
+        if (countRes && countRes.count === 0) {
             await seedBlogs();
         }
     } catch (err) {
@@ -148,7 +141,6 @@ async function seedBlogs() {
             reading_time: 14,
             date: "Feb 22, 2025"
         }
-
     ];
 
     console.log('🌱 Seeding database...');
@@ -161,7 +153,6 @@ async function seedBlogs() {
     console.log('✅ Blog data seeded');
 }
 
-// Unified query helpers
 const query = async (sql, params = []) => {
     if (USE_TURSO) {
         const res = await client.execute({ sql, args: params });
@@ -205,5 +196,3 @@ const run = async (sql, params = []) => {
 };
 
 module.exports = { query, queryOne, run, initializeDatabase };
-
-
